@@ -2,15 +2,15 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <avr/io.h>
-#include "./avr_common/uart.h"	// this includes the printf and initializes it
+#include "../avr_common/uart.h"	// this includes the printf and initializes it
 
 
 //WGM setta il tipo di pwm che voglio (fast, phase correct, ctc...)
 //COM setta il comportamento di OC:
 //          o lo azzera o lo setta nel momento del match (invertita o no)
 //CS setta il prescaler
-#define TCCRA_MASK (1<<COM1C0)
-#define TCCRB_MASK (1<<WGM12)|(1<<CS10)|(1<<CS12)
+#define TCCRA_MASK (1<<WGM10)|(1<<WGM11)|(1<<COM1C1)
+#define TCCRB_MASK (1<<WGM12)|(1<<WGM13)|(1<<CS10)
 int main(void)
 {
 
@@ -21,7 +21,8 @@ int main(void)
 	const uint8_t mask=(1<<7);
 	DDRB |= mask;
 
-	OCR1A=0;
+	OCR1A=200;
+	
 	while(1);
 
 }
