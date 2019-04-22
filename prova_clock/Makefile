@@ -25,14 +25,14 @@
 # to be uploaded on the avr
 # you can add multiple files, they will be all generated
 
-BINS=blink_time.elf timers.elf pcint.elf pwm_int.elf start_clock.elf
+BINS=blink_time.elf timers.elf pcint.elf pwm_int.elf start_clock.elf sync_test.elf
 
 # put here the additional .o files you want to generate
 # one .c file for each .o should be present
-OBJS=../avr_common/uart.o
+OBJS=../avr_common/uart.o ../libs/misc_utils.c ../libs/queue.c
 
 # put here the additional header files needed for compilation
-HEADERS=../avr_common/uart.h
+HEADERS=../avr_common/uart.h ../libs/queue.h ../libs/misc_utils.h
 
 
 # the file below contains the actual rules

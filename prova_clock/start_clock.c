@@ -9,19 +9,28 @@
 //COM setta il comportamento di OC:
 //          o lo azzera o lo setta nel momento del match (invertita o no)
 //CS setta il prescaler
-#define TCCRA_MASK (1<<WGM10)|(1<<WGM11)|(1<<COM1C1)
-#define TCCRB_MASK (1<<WGM12)|(1<<WGM13)|(1<<CS10)
+
+//STIAMO UTILIZZANDO CTC
+
+//https://www.arduinoslovakia.eu/application/timer-calculator
+
+//OCR dice la frequenza
+
+
+//PIN 12. Quando ci pare possiamo cambiarlo.
+
+#define TCCRA_MASK (1<<COM1B0)
+#define TCCRB_MASK (1<<WGM12)|(1<<CS12)|(1<<CS10)
 int main(void)
 {
 
 	TCCR1A=TCCRA_MASK;
 	TCCR1B=TCCRB_MASK;
 
-	//OCR1 è attaccato al pin 13 (quello del LED)
-	const uint8_t mask=(1<<7);
+	const uint8_t mask=(1<<6);
 	DDRB |= mask;
 
-	OCR1A=200;
+	OCR1A = 16000;
 	
 	while(1);
 
