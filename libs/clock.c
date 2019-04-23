@@ -13,7 +13,7 @@ volatile char CLOCK_LEVEL = 0;
 //f = f_clk / (prescaler * N * (1 + OCR1A))
 
 //TCCR sono settate per avere la PWM
-void clock_pwm(void)
+void clock_start(void)
 {
     TCCR1A = (1<<COM1A0) | (1<<WGM10) | (1<<WGM11);
 	TCCR1B = (1<<WGM12) | (1<<WGM13) | (1<<CS12) | (1<<CS10);
@@ -25,7 +25,7 @@ void clock_pwm(void)
 }
 
 //porto la clock a zero azzerando i TCCR (sto sempre sil pin 11)
-void clock_pwm_zero(void)
+void clock_zero(void)
 {
     TCCR1A = 0;
     TCCR1B = 0;
