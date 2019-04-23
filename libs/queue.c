@@ -7,6 +7,7 @@ char* init_queue()
 	queue_start = 0;
 	//end punta sempre al primo spazio vuoto
 	queue_end = queue;
+	return queue_end;
 }
 
 void enqueue(char* queue, char message)
