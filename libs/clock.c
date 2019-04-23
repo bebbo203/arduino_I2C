@@ -5,40 +5,14 @@
 #define PIN_MASK (1 << 5)
 volatile char CLOCK_LEVEL = 0;
 
-/*GIULIA*/
-
-/*inizializzo clock tipo CTC(quindi setto i valori di TCCR giusti) con frequenza 16000 sulla porta 12 */
-void clock_start(void)
-{
-    TCCR1A = (1<<COM1C0);
-	TCCR1B = (1<<WGM12)|(1<<CS12)|(1<<CS10);
-	
-	const uint8_t mask=(1<<6);
-	DDRB |= mask;
-
-	OCR1A = 500;
-}
-
-/*inizializzo la clock a zero settando la frequenza a zero (da provare)*/
-
-void clock_zero(void)
-{
-	TCCR1A = (1<<COM1C0);
-	TCCR1B = (1<<WGM12)|(1<<CS12)|(1<<CS10);
-	
-	const uint8_t mask=(1<<6);
-	DDRB |= mask;
-
-	OCR1A = 65535;
-}
-
-/*GIULIA*/
-
 /*ROBERTO*/
 
-//PIN 11
+//PIN 11 (PIN_MASK)
 
+//frequenza settata con OCR a 50
 //f = f_clk / (prescaler * N * (1 + OCR1A))
+
+//TCCR sono settate per avere la PWM
 void clock_pwm(void)
 {
     TCCR1A = (1<<COM1A0) | (1<<WGM10) | (1<<WGM11);
@@ -50,6 +24,7 @@ void clock_pwm(void)
 	
 }
 
+//porto la clock a zero azzerando i TCCR (sto sempre sil pin 11)
 void clock_pwm_zero(void)
 {
     TCCR1A = 0;
