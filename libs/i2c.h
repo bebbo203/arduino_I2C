@@ -17,5 +17,7 @@ uint8_t ADDRESS;
 
 void begin();
 void begin(uint8_t address);
+void clock_start();
+void clock_zero();
 
 

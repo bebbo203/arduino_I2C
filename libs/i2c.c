@@ -525,27 +525,27 @@ void begin(uint8_t address)
 //fine Roberto
 //Giulia:  526-1026
 
+/*inizializzo clock tipo CTC(quindi setto i valori di TCCR giusti) con frequenza 16000 sulla porta 12 */
+void clock_start(){
+	TCCR1A= (1<<COM1B0);
+	TCCR1B= (1<<WGM12)|(1<<CS12)|(1<<CS10)
+	
+	const uint8_t mask=(1<<6);
+	DDRB |= mask;
 
+	OCR1A = 16000;
+}
 
+/*inizializzo la clock a zero settando la frequenza a zero (da provare)*/
+void clock_zero(){
+	TCCR1A= (1<<COM1B0);
+	TCCR1B= (1<<WGM12)|(1<<CS12)|(1<<CS10)
+	
+	const uint8_t mask=(1<<6);
+	DDRB |= mask;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	OCR1A = 0;
+}
 
 
 
