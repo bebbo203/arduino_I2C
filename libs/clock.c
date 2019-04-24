@@ -2,8 +2,8 @@
 #include <avr/io.h>
 
 
-#define PIN_MASK (1 << 5)
-volatile char CLOCK_LEVEL = 0;
+
+
 
 /*ROBERTO*/
 
@@ -12,15 +12,17 @@ volatile char CLOCK_LEVEL = 0;
 //frequenza settata con OCR a 50
 //f = f_clk / (prescaler * N * (1 + OCR1A))
 
+volatile char CLOCK_LEVEL = 0;
+
 //TCCR sono settate per avere la PWM
 void clock_start(void)
 {
     TCCR1A = (1<<COM1A0) | (1<<WGM10) | (1<<WGM11);
 	TCCR1B = (1<<WGM12) | (1<<WGM13) | (1<<CS12) | (1<<CS10);
 
-	DDRB |= PIN_MASK;
+	DDRB |= SCL_MASK;
 	
-	OCR1A = 50;
+	OCR1A = 500;
 	
 }
 
@@ -30,13 +32,19 @@ void clock_zero(void)
     TCCR1A = 0;
     TCCR1B = 0;
 
-    DDRB |= PIN_MASK;
-    PORTB &= ~PIN_MASK;
+    DDRB |= SCL_MASK;
+    PORTB &= ~SCL_MASK;
+}
+
+//porto la clock ad un livello alto
+void clock_high(void)
+{
+	DDRB |= SCL_MASK;
+	PORTB |= SCL_MASK;
 }
 
 
 //Interrupt 
-volatile char pos = 1;
 ISR(PCINT0_vect)
 {
 	/*Occhio che non sappiamo per colpa di quale pin
@@ -49,18 +57,7 @@ ISR(PCINT0_vect)
 	//Qui si può chiamare un puntatore a funzione.
 	//La funzione deve essere molto snella!
 	
-	CLOCK_LEVEL = (PINB & PIN_MASK) != 0;
-	
-	if(pos == 0)
-	{
-		PORTB &= (0 << 7);
-		pos = 1;
-	}
-	else
-	{
-		PORTB |= (1 << 7); 
-		pos = 0;
-	}
+	CLOCK_LEVEL = (PINB & SCL_MASK) != 0;	
 }
 
 //Inizializza l'interrupt sul pin della clock per monitornarne il livello
@@ -76,7 +73,10 @@ void clock_monitor()
 	sei();
 }
 
-
+char clock_level()
+{
+	return CLOCK_LEVEL;
+}
 
 
 /*ROBERTO*/
