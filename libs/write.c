@@ -19,30 +19,10 @@ void write_low()
 	PORTB &= ~SDA_MASK;
 }
 
-void start_signal()
-{
-	//Sono a inizio trasmissione, mi aspetto
-	//SDA e SCL HIGH
-	write_low();
-    //Probabilmente qui serve una pausa
-	//Forse può non servire siccome la clock parte HIGH
-	//e il primo tick funge da pausa.
-	clock_start();
-}
-
-void stop_signal()
-{
-	//Sono a fine trasmissione, mi aspetto
-	//SDA e SCL LOW
-	clock_high();
-    write_high();
-}
-
-
-
 
 //Le due while (in busy waiting) servono per tenere il segnale stabile durante
 //il tick della clock
+//CAMBIO SU FRONTE DI DISCESA, QUINDI CLOCK = LOW
 void write_byte(char c)
 {
 	for(int i=0; i<8; i++)

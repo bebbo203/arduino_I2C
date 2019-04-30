@@ -22,7 +22,7 @@ void clock_start(void)
 
 	DDRB |= SCL_MASK;
 	
-	OCR1A = 500;
+	OCR1A = 2000;
 	
 }
 
@@ -44,21 +44,7 @@ void clock_high(void)
 }
 
 
-//Interrupt 
-ISR(PCINT0_vect)
-{
-	/*Occhio che non sappiamo per colpa di quale pin
-	  è stato invocato l'interrupt. Per questo abbiamo
-	  bisogno, quando ne aggiungeremo altri sempre sulla
-	  porta PCIE0, di analizzare la PINx relativa al set di
-	  pin su quella porta*/
 
-
-	//Qui si può chiamare un puntatore a funzione.
-	//La funzione deve essere molto snella!
-	
-	CLOCK_LEVEL = (PINB & SCL_MASK) != 0;	
-}
 
 //Inizializza l'interrupt sul pin della clock per monitornarne il livello
 void clock_monitor()
@@ -68,7 +54,6 @@ void clock_monitor()
 
 	PCICR |= (1 << PCIE0);
 	PCMSK0 |= (1 << PCINT5);
-
 	
 	sei();
 }

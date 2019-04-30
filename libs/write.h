@@ -8,8 +8,6 @@
 
 void write_high(void);
 void write_low(void);
-void start_signal(void);
-void stop_signal(void);
 void write_byte(char c);
 
 
