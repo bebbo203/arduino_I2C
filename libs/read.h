@@ -6,6 +6,7 @@
 #define SDA_MASK 0x80
 
 char read_bit(void);
+char read_byte(void);
 
 
 
