@@ -29,10 +29,10 @@ BINS=main_master.c main_slave.c
 
 # put here the additional .o files you want to generate
 # one .c file for each .o should be present
-OBJS=avr_common/uart.o libs/misc_utils.c libs/queue.c libs/clock.c libs/write.c libs/read.c
+OBJS=avr_common/uart.o libs/misc_utils.c libs/queue.c libs/clock.c libs/write.c libs/read.c libs/signals.c
 
 # put here the additional header files needed for compilation
-HEADERS=avr_common/uart.h libs/queue.h libs/misc_utils.h libs/clock.h libs/write.h libs/read.h
+HEADERS=avr_common/uart.h libs/queue.h libs/misc_utils.h libs/clock.h libs/write.h libs/read.h libs/signals.h
 
 
 # the file below contains the actual rules
