@@ -10,18 +10,18 @@ char read_bit(){
 	while(clock_level()==0);
 	c |= (get_char_bit(PINB, 7));
 	while(clock_level()==1);
-	return c;
+	return c != 0;
 }
 
 //faccio ciclo di lettura su 8 bit e ritorno il char 
 char read_byte(){
-	int n=0;
+	int n=7;
 	char c=0;
 	
-	while(n<8){
+	while(n>=0){
 		if(read_bit())
 			c=set_char_bit(c,n);
-		n++;
+		n--;
 	}
 	
 	return c;

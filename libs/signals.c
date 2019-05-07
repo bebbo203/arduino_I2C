@@ -4,6 +4,13 @@
 
 volatile char REG_PREC = 0;
 
+char start;
+
+char is_start_fired()
+{
+	return start;
+}
+
 ISR(PCINT0_vect)
 {
 	/*Occhio che non sappiamo per colpa di quale pin
@@ -19,14 +26,18 @@ ISR(PCINT0_vect)
 	
 	REG_PREC &= INT_MASK;
 
+	
+
 	switch(REG_PREC ^ (PINB & INT_MASK))
 	{
 	case 0x20:{
+		//printf("CLOCK\n");
 		CLOCK_LEVEL = (PINB & SCL_MASK) != 0;
 		break;
 	}
 	case 0x80:{
-		printf("0x80\n");
+		if(clock_level() && !get_char_bit(PINB, 7))
+			start=1;
 		break;
 	}
 	}
@@ -50,7 +61,7 @@ void signal_start()
 
 void signal_stop()
 {
-	//Sono a fine trasmissione, mi aspetto
+	//Sono a fine trasmissione, mi aspetto che sono in questa condizione:
 	//SDA e SCL LOW
 	clock_high();
     write_high();
@@ -58,6 +69,7 @@ void signal_stop()
 
 void signal_register_interrupt(void)
 {
+	start=0;
 	PCMSK0 |= (1 << PCINT7);
 }
 

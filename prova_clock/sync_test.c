@@ -7,6 +7,7 @@
 #include <../libs/queue.h>
 #include <../libs/misc_utils.h>
 
+
 //In questo programma si attiva un interrupt al cambio
 //di stato del
 //PIN 12.
@@ -74,6 +75,7 @@ int main(void)
 	init_clock();
 	init_write();
 
+	
     write();
 
 }
