@@ -9,16 +9,20 @@
 int main(void)
 {
 	printf_init();
-	clock_start();
+	//clock_start();
+	clock_high();
 	clock_monitor();
 	signal_register_interrupt();
 	DDRB |= 0x80;
-	PORTB &= ~0x80;
+	PORTB |= 0x80;
 
-	//_delay_ms(1000);
-	write_byte(0x0E);
+	_delay_ms(1000);
+	
+	signal_start();
+	write_byte(0x07);
+	
 
-	PORTB &= ~0x80;
+	//PORTB &= ~0x80;
 
    
 
