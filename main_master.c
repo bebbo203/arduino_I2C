@@ -16,15 +16,14 @@ int main(void)
 	DDRB |= 0x80;
 	PORTB |= 0x80;
 
-	_delay_ms(1000);
-	
 	signal_start();
-	write_byte(0x07);
+	_delay_ms(100);
+
+	write_byte(0xBE);
+	write_byte(0xBB);
+	write_byte(0x00);
 	
-
-	//PORTB &= ~0x80;
-
-   
+	PORTB &= ~0x80;
 
 	while(1)
 	{

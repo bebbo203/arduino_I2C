@@ -1,4 +1,5 @@
 #include "signals.h"
+#include <util/delay.h>
 
 #define INT_MASK 0xA0
 
@@ -30,12 +31,11 @@ ISR(PCINT0_vect)
 
 	switch(REG_PREC ^ (PINB & INT_MASK))
 	{
-	case 0x20:{
-		//printf("CLOCK\n");
+	case 0x20:{//clock
 		CLOCK_LEVEL = (PINB & SCL_MASK) != 0;
 		break;
 	}
-	case 0x80:{
+	case 0x80:{//pin
 		if(clock_level() && !get_char_bit(PINB, 7))
 			start=1;
 		break;
@@ -45,8 +45,6 @@ ISR(PCINT0_vect)
 	REG_PREC = PINB;
 	
 }
-
-
 
 void signal_start()
 {
