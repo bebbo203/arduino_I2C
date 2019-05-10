@@ -5,11 +5,16 @@
 
 volatile char REG_PREC = 0;
 
-char start;
+char start, stop;
 
 char is_start_fired()
 {
 	return start;
+}
+
+char is_stop_fired()
+{
+	return stop;
 }
 
 ISR(PCINT0_vect)
@@ -38,6 +43,11 @@ ISR(PCINT0_vect)
 	case 0x80:{//pin
 		if(clock_level() && !get_char_bit(PINB, 7))
 			start=1;
+		else
+		{
+			if(clock_level() && get_char_bit(PINB,7))
+				stop = 1;
+		}
 		break;
 	}
 	}
@@ -55,6 +65,7 @@ void signal_start()
 	//Forse può non servire siccome la clock parte HIGH
 	//e il primo tick funge da pausa.
 	clock_start();
+	_delay_ms(100);
 }
 
 void signal_stop()
@@ -63,6 +74,7 @@ void signal_stop()
 	//SDA e SCL LOW
 	clock_high();
     write_high();
+	_delay_ms(100);
 }
 
 void signal_register_interrupt(void)
