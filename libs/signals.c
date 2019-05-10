@@ -5,7 +5,7 @@
 
 volatile char REG_PREC = 0;
 
-char start, stop;
+volatile char start, stop;
 
 char is_start_fired()
 {
@@ -17,7 +17,8 @@ char is_start_fired()
 }
 
 char is_stop_fired(){
-	if(stop){
+	if(stop)
+	{
 		stop=0;
 		return 1;
 	}
@@ -43,19 +44,27 @@ ISR(PCINT0_vect)
 
 	switch(REG_PREC ^ (PINB & INT_MASK))
 	{
-	case 0x20:{//clock
+	case 0x20:
+	{//clock
+		//printf("%2x\n", PINB);
 		CLOCK_LEVEL = (PINB & SCL_MASK) != 0;
 		break;
 	}
-	case 0x80:{//pin
-		if(clock_level() && !get_char_bit(PINB, 7))
-			start=1;
-		else
+	case 0x80:
+	{//data
+		if(clock_level())
 		{
-			if(clock_level() && get_char_bit(PINB,7))
+			if(get_char_bit(PINB, 7))
+			{
 				stop = 1;
+			}
+			else
+			{
+				start = 1;
+			}
+
+		    
 		}
-		break;
 	}
 	}
 
@@ -81,7 +90,6 @@ void signal_stop()
 	//SDA e SCL LOW
 	clock_high();
     write_high();
-	_delay_ms(100);
 }
 
 void signal_register_interrupt(void)

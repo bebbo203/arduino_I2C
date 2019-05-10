@@ -11,15 +11,22 @@ int main(void)
     clock_monitor();
     signal_register_interrupt();
 
-    while(!is_start_fired());
-    while(clock_level() == 1);
-	
-
-    printf("%2x", read_byte());
 
 
-	while(!is_stop_fired());
-	printf("STOPPPP\n");
+	while(1)
+	{
+		while(!is_start_fired());
+		while(clock_level() == 1);
 
+		printf("----------------------------------->START\n");
+
+		printf("%X\n", read_byte());
+		
+		
+		//while(!is_stop_fired());
+
+
+
+	}
 
 }
