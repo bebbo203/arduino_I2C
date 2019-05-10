@@ -12,6 +12,11 @@ char is_start_fired()
 	return start;
 }
 
+char reset_start()
+{
+	start = 0;
+}
+
 char is_stop_fired()
 {
 	return stop;
@@ -58,6 +63,7 @@ ISR(PCINT0_vect)
 
 void signal_start()
 {
+	stop=0;
 	//Sono a inizio trasmissione, mi aspetto
 	//SDA e SCL HIGH
 	write_low();
@@ -72,6 +78,7 @@ void signal_stop()
 {
 	//Sono a fine trasmissione, mi aspetto che sono in questa condizione:
 	//SDA e SCL LOW
+	start = 0;
 	clock_high();
     write_high();
 	_delay_ms(100);
@@ -80,6 +87,7 @@ void signal_stop()
 void signal_register_interrupt(void)
 {
 	start=0;
+	stop=0;
 	PCMSK0 |= (1 << PCINT7);
 }
 
