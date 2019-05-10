@@ -1,12 +1,6 @@
 #include "clock.h"
 #include <avr/io.h>
 
-
-
-
-
-/*ROBERTO*/
-
 //PIN 11 (PIN_MASK)
 
 //frequenza settata con OCR a 50
@@ -39,6 +33,9 @@ void clock_zero(void)
 //porto la clock ad un livello alto
 void clock_high(void)
 {
+	//con questi non funziona
+    TCCR1A = 0;
+    TCCR1B = 0;
 	DDRB |= SCL_MASK;
 	PORTB |= SCL_MASK;
 }
@@ -62,6 +59,3 @@ char clock_level()
 {
 	return CLOCK_LEVEL;
 }
-
-
-/*ROBERTO*/
