@@ -9,6 +9,7 @@
 void write_high(void);
 void write_low(void);
 void write_byte(char c);
+void write_bit(char c);
 
 
 

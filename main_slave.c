@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <libs/clock.h>
 #include <libs/read.h>
+#include <libs/misc_utils.h>
+#include <libs/signals.h>
 #include <avr_common/uart.h>
 
 
