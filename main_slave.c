@@ -13,8 +13,6 @@ int main(void)
     clock_monitor();
     signal_register_interrupt();
 
-
-
 	while(1)
 	{
 		while(!is_start_fired());
@@ -23,7 +21,13 @@ int main(void)
 		printf("----------------------------------->START\n");
 
 		printf("%X\n", read_byte());
-		
+		printf("%X\n", read_bit());
+		write_bit(0);
+		for(int i =0;i<3;i++)
+		{
+				printf("%X\n", read_byte());
+				write_bit(0);
+		}
 		
 		//while(!is_stop_fired());
 
