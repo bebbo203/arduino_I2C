@@ -80,8 +80,10 @@ void signal_start()
     //Probabilmente qui serve una pausa
 	//Forse può non servire siccome la clock parte HIGH
 	//e il primo tick funge da pausa.
-	clock_start();
+
 	_delay_ms(100);
+	clock_start();
+	//_delay_ms(100);
 }
 
 void signal_stop()
