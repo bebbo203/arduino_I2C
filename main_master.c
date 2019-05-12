@@ -8,7 +8,12 @@ int main(void)
 
 	master_init();
 
-	master_send(0xAA, 0xFF);
+	char* queue = init_queue();
+	enqueue(queue, 0xBE);
+	enqueue(queue, 0xBB);
+	enqueue(queue, 0x00);
+
+	master_send(0xAA, queue, 3);
 
 }
 
