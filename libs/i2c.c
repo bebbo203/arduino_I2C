@@ -54,21 +54,22 @@ void master_send(char addr, char* queue, int length)
 char* master_request(char addr, int quantity)
 {
 	signal_start();
-	while(!is_start_fired());
+	while(clock_level() == 1);
 	char* queue = init_queue();
+
 	write_byte(addr);
 	write_bit(R);
-	//Si suppone che si riceva sempre l'ack
-	//siccome l'indirizzo immesso è sempre
-	//presente.
+	while(clock_level() == 1);
 	read_bit();
 	for(int i=0; i<quantity; i++)
 	{
 		enqueue(queue,read_byte());
 		write_bit(ACK);
+		if(i+1 != quantity) while(clock_level() == 1);
 	}
 
 	write_bit(NACK);
+	signal_stop();
 	return queue;
 }
 
@@ -76,6 +77,7 @@ char* master_request(char addr, int quantity)
 void slave_send(char* queue, int size)
 {
 	while(!is_start_fired());
+	while(clock_level() == 1);
 	char addr = read_byte();
 	if(addr == SLAVE_ADDR)
 	{
@@ -85,6 +87,7 @@ void slave_send(char* queue, int size)
 			do
 			{
 				write_byte(dequeue(queue));
+				while(clock_level() == 1);
 			}while(read_bit() != NACK);
 		}
 	}
