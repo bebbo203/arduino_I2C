@@ -16,7 +16,7 @@ void clock_start(void)
 
 	DDRB |= SCL_MASK;
 	
-	OCR1A = 2000;
+	OCR1A = 1000;
 	
 }
 
@@ -34,8 +34,8 @@ void clock_zero(void)
 void clock_high(void)
 {
 	//con questi non funziona
-    TCCR1A = 0;
-    TCCR1B = 0;
+    //TCCR1A = 0;
+	TCCR1B &= ~(1 << CS12) & ~(1<<CS10);
 	DDRB |= SCL_MASK;
 	PORTB |= SCL_MASK;
 }

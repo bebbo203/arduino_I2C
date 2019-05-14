@@ -6,6 +6,7 @@
 //leggo sul fronte di salita della clock 
 
 char read_bit(){
+	DDRB &= ~0x80;
 	char c=0;
 	while(clock_level()==0);
 	c |= (get_char_bit(PINB, 7));

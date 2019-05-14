@@ -18,6 +18,7 @@ void write_low()
 }
 
 void write_bit(char c){
+	DDRB |= 0x80;
 	while(clock_level() == 1);
 	SDA_CHANGE_LEVEL(get_char_bit(c, 0));
 	while(clock_level() == 0);
@@ -27,6 +28,7 @@ void write_bit(char c){
 //CAMBIO SU FRONTE DI DISCESA, QUINDI CLOCK = LOW
 void write_byte(char c)
 {
+	DDRB |= 0x80;
 	for(int i=7; i>=0; i--)
 	{
 		while(clock_level() == 1);

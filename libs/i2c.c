@@ -25,7 +25,7 @@ void slave_init(char addr)
 void master_send(char addr, char* queue, int length)
 {
 	signal_start();
-	while(!is_start_fired());
+	
 	write_byte(addr);
 	write_bit(W);
 	//Che controllo bisogna fare sull'ACK?
@@ -35,12 +35,15 @@ void master_send(char addr, char* queue, int length)
 		{
 			write_byte(dequeue(queue));
 			//Non mi aspetto nessun NACK
-			read_bit();
+			while(clock_level() == 1);
+			printf("ACK%d: %2x\n", i, read_bit());
 		}
 	}
 
-	signal_stop();
-	}
+    signal_stop();
+
+	printf("FINITA\n");
+}
 
 
 //quantity è il numero di byte che il master
