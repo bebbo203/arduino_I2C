@@ -34,7 +34,7 @@ void clock_zero(void)
 void clock_high(void)
 {
 	//con questi non funziona
-    //TCCR1A = 0;
+    TCCR1A = 0;
 	TCCR1B &= ~(1 << CS12) & ~(1<<CS10);
 	DDRB |= SCL_MASK;
 	PORTB |= SCL_MASK;

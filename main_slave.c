@@ -25,14 +25,16 @@ int main(void)
 		write_bit(0);
 		for(int i =0;i<3;i++)
 		{
+				while(clock_level() == 1);
 				printf("%X\n", read_byte());
 				write_bit(0);
 		}
-		
 		//while(!is_stop_fired());
 
-
+		printf("%2X", PINB);
 
 	}
+	
+
 
 }
