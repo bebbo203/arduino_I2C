@@ -4,18 +4,21 @@
 #include <libs/misc_utils.h>
 #include <libs/signals.h>
 #include <avr_common/uart.h>
+#include <libs/i2c.h>
 
 
 int main(void)
 {
     printf_init();
     printf("bebbo fa schifo \n");
-    clock_monitor();
-    signal_register_interrupt();
-
-	while(1)
+    slave_init(0x33);
+	
+	//PROVA MASTER_SEND
+	/*while(1)
 	{
+		printf("WAITIN...\n");
 		while(!is_start_fired());
+		printf("FIRED\n");
 		while(clock_level() == 1);
 
 		printf("----------------------------------->START\n");
@@ -33,7 +36,31 @@ int main(void)
 
 		printf("%2X", PINB);
 
+	}*/
+	
+	//PROVA SLAVE_RECEIVE
+	char* queue = slave_receive();
+	int i;
+	for(i=0; i<3; i++){
+		printf("%X\n", dequeue(queue));
 	}
+	
+	while(1); 
+	
+	//PROVA PRIMITIVE
+	/*
+	int i=0;
+	while(!is_start_fired());
+	while(clock_level() == 1);
+	for(i=0; i<10; i++){
+				while(clock_level() == 1);
+		char ret = read_byte();
+		printf("%2X\n", ret);
+
+		write_byte(ret);
+	}
+	while(1); */
+	
 	
 
 

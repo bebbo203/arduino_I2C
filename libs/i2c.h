@@ -19,6 +19,8 @@ void master_init(void);
 void slave_init(char addr);
 void master_send(char addr, char* queue, int length);
 char* master_request(char addr, int quantity);
+char* slave_receive(void);
+void slave_send(char* queue, int size);
 
 
 

@@ -26,9 +26,10 @@ void slave_init(char addr)
 void master_send(char addr, char* queue, int length)
 {
 	signal_start();
-	
+	while(clock_level() == 1);
 	write_byte(addr);
 	write_bit(W);
+	while(clock_level() == 1);
 	//Che controllo bisogna fare sull'ACK?
 	if(read_bit() == ACK)
 	{
@@ -37,7 +38,9 @@ void master_send(char addr, char* queue, int length)
 			write_byte(dequeue(queue));
 			//Non mi aspetto nessun NACK
 			while(clock_level() == 1);
-			printf("ACK%d: %2x\n", i, read_bit());
+			char ack = read_bit();
+			printf("ACK%d: %2x\n", i, ack);
+			if(ack == NACK) break;
 		}
 	}
 
@@ -88,23 +91,32 @@ void slave_send(char* queue, int size)
 	
 }
 
-char* slave_receive(char* queue, int quantity)
+char* slave_receive()
 {
 	while(!is_start_fired());
 	while(clock_level() == 1);
-
+	
+	char* queue = init_queue();
 	char addr = read_byte();
+	printf("%2X\n", addr);
+	
 	if(addr == SLAVE_ADDR)
 	{
 		if(read_bit() == W)
 		{
+			printf("ho letto W\n");
 			int i = 0;
 			write_bit(ACK);
-			do
-			{
-				enqueue(queue, read_byte());
-				write_bit(ACK);
-			}while(!is_stop_fired());
+			while(i<3){
+				while(clock_level() == 1);
+				char mex = read_byte();
+				printf("---->%X\n", mex);
+				enqueue(queue, mex);
+				if(i==2) write_bit(NACK);
+				else write_bit(ACK);
+				i++;
+			}
 		}
 	}
+	return queue;
 }
