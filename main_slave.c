@@ -39,13 +39,22 @@ int main(void)
 	}*/
 	
 	//PROVA SLAVE_RECEIVE
+	/*
 	char* queue = slave_receive();
 	int i;
 	for(i=0; i<3; i++){
 		printf("%X\n", dequeue(queue));
 	}
 	
-	while(1); 
+	while(1);
+	*/
+	
+	//PROVA SLAVE_SEND
+	char* queue = init_queue();
+	enqueue(queue, 0xAA);
+	enqueue(queue, 0xAB);
+	enqueue(queue, 0xAC);
+	slave_send(queue, 3);
 	
 	//PROVA PRIMITIVE
 	/*
