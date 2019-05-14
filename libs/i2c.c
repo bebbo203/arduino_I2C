@@ -8,6 +8,7 @@ void master_init()
 {
 	clock_monitor();
 	signal_register_interrupt();
+
 	write_high();
 	clock_high();
     
@@ -42,7 +43,6 @@ void master_send(char addr, char* queue, int length)
 
     signal_stop();
 
-	printf("FINITA\n");
 }
 
 
@@ -86,4 +86,25 @@ void slave_send(char* queue, int size)
 		}
 	}
 	
+}
+
+char* slave_receive(char* queue, int quantity)
+{
+	while(!is_start_fired());
+	while(clock_level() == 1);
+
+	char addr = read_byte();
+	if(addr == SLAVE_ADDR)
+	{
+		if(read_bit() == W)
+		{
+			int i = 0;
+			write_bit(ACK);
+			do
+			{
+				enqueue(queue, read_byte());
+				write_bit(ACK);
+			}while(!is_stop_fired());
+		}
+	}
 }
