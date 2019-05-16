@@ -1,50 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "queue.h"
 
-char queue[128];
 
-char* init_queue()
-{
-	queue_start = 0;
-	//end punta sempre al primo spazio vuoto
-	queue_end = queue;
-	return queue_end;
+
+
+void init_queue(Queue* q){
+    q->first = 0;
+	q->last = 0;
+	q->size = 0;
 }
 
-void enqueue(char* queue, char message)
-{
-    if(queue_start == 0)
-	{
-		queue_start = queue;
-		*queue_start = message;
-		queue_end = queue_start+1;
+void enqueue(Queue* q, char c){
+
+	if(q->size == 0){
+		q->buffer[0] = c;
+		q->first = 0;
+		q->last = 0;
 	}
-	else
-		*(queue_end++) = message;
+	else{
+		q->last++;
+		q->buffer[(q->last)] = c;
+	}
+
+	q->size++;
+	
 }
 
-char dequeue(char* queue)
-{
+char dequeue(Queue* q){
 	char ret;
-
-	if(queue_start == 0 || queue_start == queue_end)
-		return -1;
-	else
+	
+	ret = q->buffer[q->first++];
+	if(q->first > q->last)
 	{
-		ret = *queue_start;
-		*queue_start = 0;
-		queue_start++;
-		return ret;
+		q->first = 0;
+		q->last = 0;
 	}
-}
 
-char peek(char* queue)
-{
-	char ret;
-	if(queue_start == 0 || queue_start == queue_end)
-		return -1;
-	else
-	{
-		ret = *queue_start;
-		return ret;
-	}
+	q->size--;
+
+    return ret;
 }
+/*
+int main(void){
+	Queue Q;
+	Queue *q = &Q;
+	init_queue(q);
+
+	for(int i=0;i < 50; i++)
+	{
+		enqueue(q, i);
+		enqueue(q, i);
+	}
+
+	for(int i=0;i<105; i++)
+		printf("%d\n", dequeue(q));
+}*/

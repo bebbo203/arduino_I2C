@@ -23,7 +23,7 @@ void slave_init(char addr)
 }
 
 
-void master_send(char addr, char* queue, int length)
+void master_send(char addr, Queue* queue, int length)
 {
 	signal_start();
 	while(clock_level() == 1);
@@ -51,11 +51,10 @@ void master_send(char addr, char* queue, int length)
 
 //quantity è il numero di byte che il master
 //richiede allo slave di indirizzo addr
-char* master_request(char addr, int quantity)
+void master_request(Queue* queue, char addr, int quantity)
 {
 	signal_start();
 	while(clock_level() == 1);
-	char* queue = init_queue();
 
 	write_byte(addr);
 	write_bit(R);
@@ -70,11 +69,10 @@ char* master_request(char addr, int quantity)
 
 	write_bit(NACK);
 	signal_stop();
-	return queue;
 }
 
 
-void slave_send(char* queue, int size)
+void slave_send(Queue* queue, int size)
 {
 	while(!is_start_fired());
 	while(clock_level() == 1);
@@ -94,12 +92,11 @@ void slave_send(char* queue, int size)
 	
 }
 
-char* slave_receive()
+void slave_receive(Queue* queue)
 {
 	while(!is_start_fired());
 	while(clock_level() == 1);
 	
-	char* queue = init_queue();
 	char addr = read_byte();
 	printf("%2X\n", addr);
 	
@@ -121,5 +118,4 @@ char* slave_receive()
 			}
 		}
 	}
-	return queue;
 }

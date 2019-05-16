@@ -11,8 +11,11 @@ int main(void)
 	master_init();
 
 	printf("START\n");
+	
+	Queue Q, *queue;
+	queue = &Q;
 
-	char* queue = master_request(0x33, 3);
+	master_request(queue, 0x33, 3);
 
 	for(int i=0;i<3;i++)
 		printf("%2X\n", dequeue(queue));

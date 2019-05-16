@@ -40,7 +40,10 @@ int main(void)
 	
 	//PROVA SLAVE_RECEIVE
 	/*
-	char* queue = slave_receive();
+	 * 	Queue Q, *queue;
+	 * queue = &Q;
+	init_queue(queue);
+	slave_receive(queue);
 	int i;
 	for(i=0; i<3; i++){
 		printf("%X\n", dequeue(queue));
@@ -50,7 +53,9 @@ int main(void)
 	*/
 	
 	//PROVA SLAVE_SEND
-	char* queue = init_queue();
+	struct Queue Q, *queue;
+	queue = &Q;
+	init_queue(queue);
 	enqueue(queue, 0xAA);
 	enqueue(queue, 0xAB);
 	enqueue(queue, 0xAC);

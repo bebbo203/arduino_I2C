@@ -17,10 +17,10 @@
 
 void master_init(void);
 void slave_init(char addr);
-void master_send(char addr, char* queue, int length);
-char* master_request(char addr, int quantity);
-char* slave_receive(void);
-void slave_send(char* queue, int size);
+void master_send(char addr, Queue* queue, int length);
+void master_request(Queue* queue, char addr, int quantity);
+void slave_receive(Queue* queue);
+void slave_send(Queue* queue, int size);
 
 
 
