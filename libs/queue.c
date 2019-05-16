@@ -3,8 +3,6 @@
 #include "queue.h"
 
 
-
-
 void init_queue(Queue* q){
     q->first = 0;
 	q->last = 0;
@@ -12,7 +10,6 @@ void init_queue(Queue* q){
 }
 
 void enqueue(Queue* q, char c){
-
 	if(q->size == 0){
 		q->buffer[0] = c;
 		q->first = 0;
@@ -31,8 +28,7 @@ char dequeue(Queue* q){
 	char ret;
 	
 	ret = q->buffer[q->first++];
-	if(q->first > q->last)
-	{
+	if(q->first > q->last){
 		q->first = 0;
 		q->last = 0;
 	}

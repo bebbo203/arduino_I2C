@@ -4,10 +4,10 @@
 typedef struct Queue Queue;
 
 struct Queue{
-	unsigned char buffer[250];
-	unsigned char first;
-	unsigned char last;
-	unsigned char size;
+	char buffer[250];
+	char first;
+	char last;
+	char size;
 };
 
 void init_queue(Queue* q);
