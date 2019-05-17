@@ -16,7 +16,7 @@ void clock_start(void)
 
 	DDRB |= SCL_MASK;
 	
-	OCR1A = 1000;
+	OCR1A = 100;
 	
 }
 

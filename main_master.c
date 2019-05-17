@@ -6,7 +6,7 @@
 int main(void)
 {
 
-	/*printf_init();
+	printf_init();
 	master_init();
 
 	printf("START\n");
@@ -15,30 +15,43 @@ int main(void)
 	queue = &Q;
 	init_queue(queue);
 
-	master_request(queue, 0x33, 3);
-
-	for(int i=0;i<3;i++)
+	int i;
+	for(i=0; i<20; i++){
+		master_request(queue, 0x33, 3);
+		//printf(">>>%d\n", i);
+	}
+	//printf("Size: %d\n", queue->size);
+	for(i=0;i<60;i++)
 		printf("%X\n", dequeue(queue));
 
 	
 
 	printf("END\n");
 	
-	while(1);*/
+	while(1);
 
+/*
 	printf_init();
 	master_init();
 
 	Queue Q, *queue;
 	queue = &Q;
-	init_queue(queue);
 
-	enqueue(queue, 0xAA);
-	enqueue(queue, 0xBB);
-	enqueue(queue, 0xCC);
-
-	master_send(0x33, queue, 3);
+	int i;
+	for(i=0; i<20; i++){
+		init_queue(queue);
+		enqueue(queue, 0xAA);
+		enqueue(queue, 0xBB);
+		enqueue(queue, 0xBB);
+		enqueue(queue, 0xBB);
+		enqueue(queue, 0xCC);
+		master_send(0x33, queue, 5);
+	}
 	
+	while(1);
+	*/
+
+
 }
 
 
