@@ -5,7 +5,7 @@
 
 int main(void)
 {
-
+/*
 	printf_init();
 	master_init();
 
@@ -29,8 +29,9 @@ int main(void)
 	printf("END\n");
 	
 	while(1);
+*/
 
-/*
+
 	printf_init();
 	master_init();
 
@@ -42,14 +43,11 @@ int main(void)
 		init_queue(queue);
 		enqueue(queue, 0xAA);
 		enqueue(queue, 0xBB);
-		enqueue(queue, 0xBB);
-		enqueue(queue, 0xBB);
 		enqueue(queue, 0xCC);
-		master_send(0x33, queue, 5);
+		master_send(0x33, queue, 3);
 	}
 	
 	while(1);
-	*/
 
 
 }

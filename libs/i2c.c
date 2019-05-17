@@ -24,28 +24,33 @@ void slave_init(char addr){
 void master_send(char addr, Queue* queue, int length){
 	//printf("PRE_START PINB: %2X\n", PINB);
 	signal_start();
-	//printf("POST_START PINB: %2X\n", PINB);
 	while(clock_level() == 1);
+	
 	write_byte(addr);
 	write_bit(W);
 	while(clock_level() == 1);
-	//Che controllo bisogna fare sull'ACK?
-	if(read_bit() == ACK){
+	//Non è contemplato che lo slave mi mandi un NACK,
+	//non può decidere di interrompere la conversazione
+	int i = 0;
+	while(i<length){ 
 		
-		for(int i=0; i<length; i++){
-			
+		if(read_bit() == ACK){
+	
 			write_byte(dequeue(queue));
 			//Non mi aspetto nessun NACK
 			while(clock_level() == 1);
-			char ack = read_bit();
-			printf("ACK%d: %2x\n", i, ack);
-					
-			if(ack == NACK) break;
+			//printf("ACK%d: %2x\n", i, ack);
+			
+			i++;
+		}
+		else{
+			i == length;
+			while(clock_level() == 1);
+			printf("sblock\n");
+			break;
 		}
 	}
-	//printf("PRE_STOP PINB: %2X\n", PINB);
     signal_stop();
-	//printf("POST_STOP PINB: %2X\n", PINB);
 }
 
 
