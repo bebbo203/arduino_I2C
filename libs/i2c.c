@@ -121,6 +121,7 @@ void slave_send(Queue* queue, int size){
 	return;	
 }
 
+
 void slave_receive(Queue* queue){
 	
 	while(!is_start_fired());
@@ -133,18 +134,15 @@ void slave_receive(Queue* queue){
 		
 		if(read_bit() == W){
 			
-			printf("ho letto W\n");
+			//da sistemare con caso generico 
 			int i = 0;
-			write_bit(ACK);
-			while(i<5){
+			while(i<3){
+				write_bit(ACK);
 				while(clock_level() == 1);
-				char mex = read_byte();
-				printf("---->%X\n", mex);
-				enqueue(queue, mex);
-				if(i==4) write_bit(NACK);
-				else write_bit(ACK);
+				enqueue(queue, read_byte());
 				i++;
 			}
 		}
 	}
 }
+
