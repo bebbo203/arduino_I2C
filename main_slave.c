@@ -5,12 +5,13 @@
 #include <libs/signals.h>
 #include <avr_common/uart.h>
 #include <libs/i2c.h>
+#include <util/delay.h>
 
 
 int main(void)
 {
     printf_init();
-    printf("bebbo fa schifo \n");
+    //printf("bebbo fa schifo \n");
     slave_init(0x33);
 	
 	//PROVA MASTER_SEND
@@ -37,29 +38,44 @@ int main(void)
 	}*/
 	
 	//PROVA SLAVE_RECEIVE
+	/*
 	Queue Q, *queue;
 	queue = &Q;
 	init_queue(queue);
-	slave_receive(queue);
+	int k;
+	for(k=0; k<20; k++){
+		printf("RECIVE BLOCK: %d\n", k);
+		slave_receive(queue);
+	}
 	int i;
-	for(i=0; i<3; i++){
+	printf("--->FINITO REC-> dim : %d\n", queue->size);
+	for(i=0; i<100; i++){
 		printf("%X\n", dequeue(queue));
 	}
+	printf(" FINE\n");
 	
-	while(1);
+	while(1);*/
 	
 	//PROVA SLAVE_SEND
-	/*
+	
 	struct Queue Q, *queue;
 	queue = &Q;
-	init_queue(queue);
-	enqueue(queue, 0xAA);
-	enqueue(queue, 0xAB);
-	enqueue(queue, 0xAC);
 	
-	slave_send(queue, 3); 
+	int i;
+	printf("inizio\n");
+	for(i=0; i<20;i++){
+		init_queue(queue);
+		enqueue(queue, 0xAA);
+		enqueue(queue, 0xAB);
+		enqueue(queue, 0xAC);
+		
+		slave_send(queue, 3); 
+		//printf("e: %d\n", i);
+	}
+	
+	printf("fine\n");
 	while(1);
-	*/
+	
 	
 	//PROVA PRIMITIVE
 	/*
