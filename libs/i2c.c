@@ -22,34 +22,30 @@ void slave_init(char addr){
 
 
 void master_send(char addr, Queue* queue, int length){
-	//printf("PRE_START PINB: %2X\n", PINB);
+	
 	signal_start();
 	while(clock_level() == 1);
 	
 	write_byte(addr);
 	write_bit(W);
-	while(clock_level() == 1);
+	//while(clock_level() == 1); <---------- DENTRO
+	
 	//Non è contemplato che lo slave mi mandi un NACK,
 	//non può decidere di interrompere la conversazione
 	int i = 0;
 	while(i<length){ 
-		
+		while(clock_level() == 1);
 		if(read_bit() == ACK){
-	
 			write_byte(dequeue(queue));
-			//Non mi aspetto nessun NACK
-			while(clock_level() == 1);
-			//printf("ACK%d: %2x\n", i, ack);
-			
 			i++;
 		}
 		else{
-			i == length;
-			while(clock_level() == 1);
-			printf("sblock\n");
+			printf("sblock%d\n", i);
 			break;
 		}
 	}
+	while(clock_level() == 1); //devo aspettare a mandare lo stop
+							   //altrimenti lo slave non fa in tempo a leggere
     signal_stop();
 }
 
@@ -150,8 +146,8 @@ void slave_receive(Queue* queue){
 void read_string(Queue* queue)
 {
 	char c;
-
-	while((c = usart_getchar()) != 0xA)
+	while((c = usart_getchar()) != 0xA) //terminatore a capo
 		enqueue(queue, c);
 }
 
+/* usart_putchar() non serve perchè usiamo la printf */
