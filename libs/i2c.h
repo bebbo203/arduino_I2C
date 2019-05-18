@@ -7,7 +7,9 @@
 #include "signals.h"
 #include "misc_utils.h"
 #include "queue.h"
-#include "util/delay.h"
+#include <util/delay.h>
+#include <avr/io.h>
+#include <avr_common/uart.h>
 
 #define W 0
 #define R 1
@@ -21,6 +23,7 @@ void master_send(char addr, Queue* queue, int length);
 void master_request(Queue* queue, char addr, int quantity);
 void slave_receive(Queue* queue);
 void slave_send(Queue* queue, int size);
+void read_string(Queue* queue);
 
 
 

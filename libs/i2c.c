@@ -146,3 +146,12 @@ void slave_receive(Queue* queue){
 	}
 }
 
+//Settare su cutecom il terminatore a LF 
+void read_string(Queue* queue)
+{
+	char c;
+
+	while((c = usart_getchar()) != 0xA)
+		enqueue(queue, c);
+}
+
