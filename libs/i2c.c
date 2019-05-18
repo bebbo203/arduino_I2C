@@ -81,6 +81,7 @@ void master_request(Queue* queue, char addr, int quantity){
 }
 
 
+
 void slave_send(Queue* queue, int size){
 	
 	//int i = 1;
@@ -129,18 +130,16 @@ void slave_receive(Queue* queue){
 	if(addr == SLAVE_ADDR){
 		
 		if(read_bit() == W){
-			
-			//da sistemare con caso generico 
-			int i = 0;
-			while(i<3){
+			while(!is_stop_fired()){
 				write_bit(ACK);
+
 				while(clock_level() == 1);
 				enqueue(queue, read_byte());
-				i++;
 			}
 		}
 	}
 }
+
 
 //Settare su cutecom il terminatore a LF 
 void read_string(Queue* queue)

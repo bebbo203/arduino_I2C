@@ -13,25 +13,28 @@ int main(void)
     printf_init();
     //printf("bebbo fa schifo \n");
     slave_init(0x33);
-	printf(" START\n");
-	//PROVA SLAVE_RECEIVE
 	
+	//PROVA SLAVE_RECEIVE
+	printf(" START\n");
 	Queue Q, *queue;
 	queue = &Q;
 	init_queue(queue);
 	int k;
-	for(k=0; k<20; k++){
-		//printf("RECIVE BLOCK: %d\n", k);
-		slave_receive(queue);
+	printf("entrato\n");
+	slave_receive(queue);
+	printf("uscito\n");
+	for(k=0; k<queue->size; k++){
+		printf("%c", dequeue(queue));
 	}
+	printf("\n");
+	/*
 	int i;
 	printf("--->FINITO REC-> dim : %d\n", queue->size);
-	for(i=0; i<60; i++){
-		printf("%X\n", dequeue(queue));
-	}
+	for(i=0; i<30; i++){
+		printf("%2X\n", dequeue(queue));
+	}*/
 	printf(" FINE\n");
 	
-	while(1);
 	
 	//PROVA SLAVE_SEND
 	/*
@@ -50,25 +53,10 @@ int main(void)
 		//printf("e: %d\n", i);
 	}
 	
-	printf("fine\n");
+	printf("fine\n");*/
 	while(1);
 	
-	
-	//PROVA PRIMITIVE
-	/*
-	int i=0;
-	while(!is_start_fired());
-	while(clock_level() == 1);
-	for(i=0; i<10; i++){
-				while(clock_level() == 1);
-		char ret = read_byte();
-		printf("%2X\n", ret);
 
-		write_byte(ret);
-	}
-	while(1); */
-	
-	
 
 
 }
