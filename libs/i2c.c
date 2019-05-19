@@ -33,19 +33,24 @@ void master_send(char addr, Queue* queue, int length){
 	//Non è contemplato che lo slave mi mandi un NACK,
 	//non può decidere di interrompere la conversazione
 	int i = 0;
-	while(i<length){ 
+	while(i<length)
+	{ 
 		while(clock_level() == 1);
-		if(read_bit() == ACK){
+		if(read_bit() == ACK)
+		{
 			write_byte(dequeue(queue));
 			i++;
 		}
-		else{
+		else
+		{
 			printf("sblock%d\n", i);
 			break;
 		}
 	}
 	while(clock_level() == 1); //devo aspettare a mandare lo stop
-							   //altrimenti lo slave non fa in tempo a leggere
+	//altrimenti lo slave non fa in tempo a leggere
+
+
     signal_stop();
 }
 
@@ -147,6 +152,9 @@ void read_string(Queue* queue)
 	char c;
 	while((c = usart_getchar()) != 0xA) //terminatore a capo
 		enqueue(queue, c);
+
+	//Stringa C: terminatore 0x00
+	enqueue(queue, 0x0A);
 }
 
 /* usart_putchar() non serve perchè usiamo la printf */

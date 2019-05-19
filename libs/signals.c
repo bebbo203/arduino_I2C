@@ -91,6 +91,8 @@ void signal_stop()
 {
 	//Sono a fine trasmissione, mi aspetto che sono in questa condizione:
 	//SDA e SCL LOW
+
+
 	clock_high();
     write_high();
 }
