@@ -37,14 +37,14 @@ int main(void)
 
 //MASTER_SEND NO SERIALE
 /*
-	printf_init();
-	master_init();
+	//printf_init();
+//	master_init();
 
 	Queue Q, *queue;
 	queue = &Q;
 
 	int i;
-	for(i=0; i<11; i++){ //mando sempre un pacchetto in più che mi garantisce la pulizia della seriale
+	for(i=0; i<3; i++){ //mando sempre un pacchetto in più che mi garantisce la pulizia della seriale
 						 //lo slave comunque riceve tutto quello che deve (ossia condizione-1)
 						 //in questo modo non ho bisogno di ricompilare tutto ogni volta che ricomincia 
 						 //la comunicazione, mi basta fare open/close su cutecom
@@ -54,38 +54,53 @@ int main(void)
 		enqueue(queue, 0xCC);
 		master_send(0x33, queue, 3);
 	}
+
+
+	
 	while(1);
 */
+
 	
 //MASTER_SEND SERIALE
 	//while(1)
 	//{
 		//printf("sono nel while\n");
-		Queue queue;
-		Queue* q = &queue;
+
+
+	Queue queue, dummy_queue;
+	Queue* q = &queue;
+	Queue* d_q = &dummy_queue;
+
+	init_queue(d_q);
+	
+	for(int i=0; i<10; i++)
+		enqueue(d_q, 0x00);
+
+    while(d_q->size > 0)
+		master_send(0x33, d_q, 1);
+
+	
+	while(1)
+	{
 		init_queue(q);
-		enqueue(q, 0x00);
-		master_send(0x33, q, 1);
+	
+
 		printf("parla: \n");
 		
 		cli();
 		read_string(q);
 		sei();
 		
-		printf("ho letto\n");
+		printf("ho letto %d\n", q->size);
 
 		master_send(0x33, q, q->size);
-		
-		printf("Ho inviato\n");
 
-		/*la coda mi si svuota nella master_send
-		while(q->size > 0)
-			printf("%c", dequeue(q));
-		*/	
+	}
 
-		printf("\n");
+
 	//}
 	
+
 	
 
 
