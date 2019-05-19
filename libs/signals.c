@@ -74,6 +74,7 @@ ISR(PCINT0_vect)
 
 void signal_start()
 {
+	
 	//Sono a inizio trasmissione, mi aspetto
 	//SDA e SCL HIGH
 	write_low();
