@@ -19,21 +19,26 @@ int main(void)
 	Queue Q, *queue;
 	queue = &Q;
 	init_queue(queue);
-	int k;
-	printf("entrato\n");
-	slave_receive(queue);
-	printf("uscito\n");
-	for(k=0; k<queue->size; k++){
-		printf("%c", dequeue(queue));
-	}
-	printf("\n");
-	/*
+	
 	int i;
-	printf("--->FINITO REC-> dim : %d\n", queue->size);
-	for(i=0; i<30; i++){
-		printf("%2X\n", dequeue(queue));
-	}*/
-	printf(" FINE\n");
+	while(queue->size<10) {
+		slave_receive(queue);
+		printf("size: %d\n", queue->size);
+	}
+	while(queue->size>0) dequeue(queue);
+	printf("prontoooo\n");
+	
+	while(1){
+		//printf("prima\n");
+		slave_receive(queue);
+		//printf("sec\n");
+		
+		//printf("--->FINITO REC-> dim : %d\n", queue->size)
+		while(queue->size>0){
+			printf("%c", dequeue(queue));
+		}
+		printf(" FINE\n");
+	}
 	
 	
 	//PROVA SLAVE_SEND
@@ -54,7 +59,7 @@ int main(void)
 	}
 	
 	printf("fine\n");*/
-	while(1);
+	//while(1);
 	
 
 
