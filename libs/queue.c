@@ -37,18 +37,17 @@ char dequeue(Queue* q){
 
     return ret;
 }
-/*
-int main(void){
-	Queue Q;
-	Queue *q = &Q;
-	init_queue(q);
 
-	for(int i=0;i < 50; i++)
-	{
-		enqueue(q, i);
-		enqueue(q, i);
-	}
+//La coda dst deve essere allocata fuori dalla
+//call di questa funzione
+void clone(Queue* src, Queue* dst)
+{
+	init_queue(dst);
 
-	for(int i=0;i<105; i++)
-		printf("%d\n", dequeue(q));
-}*/
+	dst->first = src->first;
+	dst->last = src->last;
+	dst->size = src->size;
+
+	for(int i=0; i<src->size; i++)
+		dst->buffer[i] = src->buffer[i];
+}

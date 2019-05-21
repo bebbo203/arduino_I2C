@@ -13,6 +13,7 @@ struct Queue{
 void init_queue(Queue* q);
 void enqueue(Queue* q, char c);
 char dequeue(Queue* q);
+void clone(Queue* src, Queue* dst);
 
 
 
