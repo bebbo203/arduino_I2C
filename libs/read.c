@@ -3,8 +3,7 @@
 #include "misc_utils.h"
 
 
-//leggo sul fronte di salita della clock 
-
+//Leggo sul fronte di salita della clock 
 char read_bit(){
 	DDRB &= ~0x80;
 	char c=0;
@@ -14,7 +13,7 @@ char read_bit(){
 	return c != 0;
 }
 
-//faccio ciclo di lettura su 8 bit e ritorno il char 
+//Faccio ciclo di lettura su 8 bit e ritorno il char 
 char read_byte(){
 	int n=7;
 	char c=0;

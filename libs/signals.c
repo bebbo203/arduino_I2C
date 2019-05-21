@@ -16,7 +16,8 @@ char is_start_fired()
 	return start;
 }
 
-char is_stop_fired(){
+char is_stop_fired()
+{
 	if(stop)
 	{
 		stop=0;
@@ -36,40 +37,33 @@ ISR(PCINT0_vect)
 
 	//Qui si può chiamare un puntatore a funzione.
 	//La funzione deve essere molto snella!
-
 	
 	REG_PREC &= INT_MASK;
 
-	
-
 	switch(REG_PREC ^ (PINB & INT_MASK))
 	{
-	case 0x20:
-	{//clock
-		//printf("%2x\n", PINB);
-		CLOCK_LEVEL = (PINB & SCL_MASK) != 0;
-		break;
-	}
-	case 0x80:
-	{//data
-		if(clock_level())
-		{
-			if(get_char_bit(PINB, 7))
-			{
-				stop = 1;
-			}
-			else
-			{
-				start = 1;
-			}
-
-		    
-		}
-	}
+	    case 0x20:
+	    {//clock
+		    CLOCK_LEVEL = (PINB & SCL_MASK) != 0;
+		    break;
+	    }
+	    case 0x80:
+	    {//data
+		    if(clock_level())
+		    {
+			    if(get_char_bit(PINB, 7))
+			    {
+				    stop = 1;
+			    }
+			    else
+			    {
+				    start = 1;
+			    }    
+		    }
+	    }
 	}
 
 	REG_PREC = PINB;
-	
 }
 
 void signal_start()
@@ -84,14 +78,12 @@ void signal_start()
 
 	_delay_ms(100);
 	clock_start();
-	//_delay_ms(100);
 }
 
 void signal_stop()
 {
 	//Sono a fine trasmissione, mi aspetto che sono in questa condizione:
 	//SDA e SCL LOW
-
 
 	clock_high();
     write_high();

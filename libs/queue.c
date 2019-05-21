@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "queue.h"
 
-
+//La coda q deve essere già allocata
 void init_queue(Queue* q){
     q->first = 0;
 	q->last = 0;

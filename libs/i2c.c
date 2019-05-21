@@ -20,8 +20,7 @@ void slave_init(char addr){
 	SLAVE_ADDR = addr;
 }
 
-
-
+//Sincronizza e pulisce la seriale da residui master-side
 void master_sync(char addr, int n)
 {
 	Queue dummy_queue;
@@ -33,9 +32,14 @@ void master_sync(char addr, int n)
 		enqueue(d_q, 0x00);
 
     while(d_q->size > 0)
+	{
+		printf(".");
 		master_send(addr, d_q, 1);
+	}
+	printf("\nSINCRONIZZATO\n");
 }
 
+//Sincronizza e pulisce la seriale da residui slave-side
 void slave_sync(int n)
 {
 	Queue dummy_queue, *d_q;
@@ -43,10 +47,14 @@ void slave_sync(int n)
 	init_queue(d_q);
 
 	for(;n>0;n--)
+	{
+		printf(".");
 		slave_receive(d_q);
+	}
+	printf("\nSINCRONIZZATO\n");
 }
 
-
+//Invia allo slave addr la coda queue di lenght q->size
 void master_send(char addr, Queue* queue, int length){
 	
 	signal_start();
@@ -54,10 +62,9 @@ void master_send(char addr, Queue* queue, int length){
 	
 	write_byte(addr);
 	write_bit(W);
-	//while(clock_level() == 1); <---------- DENTRO
 	
-	//Non è contemplato che lo slave mi mandi un NACK,
-	//non può decidere di interrompere la conversazione
+	//Lo slave non può inviare un NACK
+	//qualsiasi cosa differente da un ACK blocca la comunicazione
 	int i = 0;
 	while(i<length)
 	{ 
@@ -68,21 +75,18 @@ void master_send(char addr, Queue* queue, int length){
 			i++;
 		}
 		else
-		{
-			printf("sblock%d\n", i);
 			break;
-		}
+		
 	}
-	while(clock_level() == 1); //devo aspettare a mandare lo stop
+	while(clock_level() == 1);//devo aspettare a mandare lo stop
 	//altrimenti lo slave non fa in tempo a leggere
 
 
     signal_stop();
 }
 
-
-//quantity è il numero di byte che il master
-//richiede allo slave di indirizzo addr
+//Richiedi allo slave addr un messaggio di quantity byte
+//da salvare in queue
 void master_request(Queue* queue, char addr, int quantity){
 	
 	signal_start();
@@ -95,7 +99,6 @@ void master_request(Queue* queue, char addr, int quantity){
 	for(int i=0; i<quantity; i++){
 		
 		char b = read_byte();
-		//printf("---->%2X\n", b);
 		enqueue(queue,b);
 		if(i+1 != quantity){
 			write_bit(ACK);
@@ -104,18 +107,15 @@ void master_request(Queue* queue, char addr, int quantity){
 	}
 
 	write_bit(NACK);
-	//printf("FINE\n");
 	while(clock_level() == 1); //se non aspetto che la clock torni a 0
 							   //lo slave non fa in tempo a leggere il
 							   //NACK (non esce dal while(read_bit() == ACK)
 	signal_stop();
 }
 
-
-
+//Invia al master un messaggio salvato in queue di size byte
 void slave_send(Queue* queue, int size){
 	
-	//int i = 1;
 	while(!is_start_fired());
 	while(clock_level() == 1);
 	char addr = read_byte();
@@ -124,11 +124,8 @@ void slave_send(Queue* queue, int size){
 		if(read_bit() == R){
 			write_bit(ACK);
 			char ret = dequeue(queue);
-			//printf("%2X\n", ret);
 			write_byte(ret);
-			//printf("primo->%2X\n", queue->buffer[queue->first]); 
 			while(clock_level() == 1);
-			//i++;
 			/* i<size -> i controlli sulla size non vengono fatti perchè
 			 * la request del master mi specifica quanti byte vuole,
 			 * il suo NACK arriverà necessariamente.
@@ -137,19 +134,14 @@ void slave_send(Queue* queue, int size){
 			 * in cui ne ha di meno. */
 			while(read_bit() == ACK){
 				char ret = dequeue(queue);
-				//printf("%2X\n", ret);
 				write_byte(ret);
-				//printf("primo->%2X\n", queue->buffer[queue->first]); 
 				while(clock_level() == 1);
-				//i++;
 			}
-			//printf("esco\n");
 		}
 	}
-	return;	
 }
 
-
+//Ricevi dal master un messaggio da salvare in queue
 void slave_receive(Queue* queue){
 	
 	while(!is_start_fired());
@@ -171,8 +163,8 @@ void slave_receive(Queue* queue){
 	}
 }
 
-
-//Settare su cutecom il terminatore a LF 
+//Settare su cutecom il terminatore a LF
+//Utility di lettura stringhe da seriale
 void read_string(Queue* queue)
 {
 	char c;
