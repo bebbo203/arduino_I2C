@@ -148,7 +148,6 @@ void slave_receive(Queue* queue){
 	while(clock_level() == 1);
 	
 	char addr = read_byte();
-	printf("%2X\n", addr);
 	
 	if(addr == SLAVE_ADDR){
 		
