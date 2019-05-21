@@ -13,7 +13,8 @@ int main(void)
     printf_init();
     slave_init(0x33);
     
-	slave_sync(10);
+    printf("Attesa sincronizzazione");
+	slave_sync(50);
 	
 	Queue Q, *queue, *q_clone, copia;
 	queue = &Q;
