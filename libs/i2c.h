@@ -24,6 +24,8 @@ void master_request(Queue* queue, char addr, int quantity);
 void slave_receive(Queue* queue);
 void slave_send(Queue* queue, int size);
 void read_string(Queue* queue);
+void master_sync(char addr, int n);
+void slave_sync(int n);
 
 
 

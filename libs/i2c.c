@@ -21,6 +21,32 @@ void slave_init(char addr){
 }
 
 
+
+void master_sync(char addr, int n)
+{
+	Queue dummy_queue;
+	Queue* d_q = &dummy_queue;
+
+	init_queue(d_q);
+	
+	for(; n>0; n--)
+		enqueue(d_q, 0x00);
+
+    while(d_q->size > 0)
+		master_send(addr, d_q, 1);
+}
+
+void slave_sync(int n)
+{
+	Queue dummy_queue, *d_q;
+	d_q = &dummy_queue;
+	init_queue(d_q);
+
+	for(;n>0;n--)
+		slave_receive(d_q);
+}
+
+
 void master_send(char addr, Queue* queue, int length){
 	
 	signal_start();
@@ -158,3 +184,4 @@ void read_string(Queue* queue)
 }
 
 /* usart_putchar() non serve perchè usiamo la printf */
+
