@@ -23,12 +23,12 @@ int main(void)
 	while(1){
 		slave_receive(queue);
 		
-		clone(queue, q);
+		clone(queue, q_clone);
 		
 		slave_send(queue, queue->size);
 		
 		printf("Ho ricevuto: ");
-		while(q->size>0) printf("%c", dequeue(q));
+		while(q_clone->size>0) printf("%c", dequeue(q_clone));
 
 	}
 

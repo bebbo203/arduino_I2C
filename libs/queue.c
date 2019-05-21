@@ -17,7 +17,7 @@ void enqueue(Queue* q, char c){
 	}
 	else{
 		q->last++;
-		q->buffer[(q->last)] = c;
+		q->buffer[((int)q->last)] = c;
 	}
 
 	q->size++;
@@ -27,7 +27,7 @@ void enqueue(Queue* q, char c){
 char dequeue(Queue* q){
 	char ret;
 	
-	ret = q->buffer[q->first++];
+	ret = q->buffer[(int)q->first++];
 	if(q->first > q->last){
 		q->first = 0;
 		q->last = 0;
