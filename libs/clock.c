@@ -11,11 +11,11 @@ volatile char CLOCK_LEVEL = 0;
 void clock_start(void)
 {
     TCCR1A = (1<<COM1A0) | (1<<WGM10) | (1<<WGM11);
-	TCCR1B = (1<<WGM12) | (1<<WGM13) | (1<<CS00) | (1<<CS02);
+	TCCR1B = (1<<WGM12) | (1<<WGM13) | (1<<CS02) | (1<<CS00);
 
 	DDRB |= SCL_MASK;
 	
-	OCR1A = 10;	
+	OCR1A = 1;	
 }
 
 //Porto la clock a zero azzerando i TCCR (sto sempre sil pin 11)
@@ -33,7 +33,7 @@ void clock_high(void)
 {
 	//con questi non funziona
     TCCR1A = 0;
-	TCCR1B &= ~(1 << CS12) & ~(1<<CS10);
+	TCCR1B &= ~(1 << CS02) & ~(1 << CS00);
 	DDRB |= SCL_MASK;
 	PORTB |= SCL_MASK;
 }

@@ -15,14 +15,14 @@ int main(void)
 	Queue* q = &queue;
 
 	printf("Attesa sincronizzazione");
-	master_sync(0x33, 10);
+	master_sync(0x33, 50);
 
 	char length;
 	while(1)
 	{
 		init_queue(q);
 	
-		printf("Inserisci un messaggio: \n");
+		printf("\nInserisci un messaggio: \n");
 		
 		cli();
 		read_string(q);
@@ -33,10 +33,11 @@ int main(void)
 		printf("Invio del messaggio in corso...\n");
 		master_send(0x33, q, length);
 
+		init_queue(q);
 		printf("Richiesta dati in corso...\n");
 		master_request(q, 0x33, length);
 
-		printf("Messaggio ricevuto: ");
+		printf("Messaggio ricevuto:\n>");
 		while(q->size > 0)
 			printf("%c", dequeue(q));
    
